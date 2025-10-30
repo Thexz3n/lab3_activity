@@ -1,68 +1,85 @@
-class Car {
-  // Static const manufacturer (same for all cars)
-  static const String manufacturer = 'Toyota';
-  
-  // Final variables for model and year (immutable per instance)
-  final String model;
-  final int year;
-  
-  // Static counter to track number of Car objects created
-  static int _carCount = 0;
-  
-  // Constructor to initialize model and year
-  Car(this.model, this.year) {
-    _carCount++;  // Increment counter on creation
-  }
-  
-  // Const constructor for compile-time constants (extension)
-  // Note: Const constructors require all fields to be final and initialized.
-  // The static counter won't increment for const objects since they are compile-time constants.
-  const Car.constant(this.model, this.year);
-  
-  // Method to display car information
-  void displayInfo() {
-    print('Manufacturer: $manufacturer');
-    print('Model: $model');
-    print('Year: $year');
-  }
-  
-  // Static method to get the total count of cars created
-  static int getCarCount() {
-    return _carCount;
-  }
-}
 
+import 'dart:io';
+import 'cars.dart';
+
+
+void showMenu() {
+  print('\nCar Information System');
+  print('1. Add a new car');
+  print('2. Display all cars');
+  print('3. Display total car count');
+  print('4. Exit');
+}
 void main() {
-  // Create multiple Car objects
-  Car car1 = Car('Camry', 2020);
-  Car car2 = Car('Corolla', 2019);
-  Car car3 = Car('RAV4', 2021);
+  List<Car> cars = []; 
   
-  // Create a const Car object using the const constructor (extension)
-  const Car car4 = const Car.constant('Prius', 2022);
-  
-  // Display information for each car
-  print('Car 1:');
-  car1.displayInfo();
-  print('');
-  
-  print('Car 2:');
-  car2.displayInfo();
-  print('');
-  
-  print('Car 3:');
-  car3.displayInfo();
-  print('');
-  
-  print('Car 4 (const):');
-  car4.displayInfo();
-  print('');
-  
-  // Display total count (extension)
-  print('Total cars created: ${Car.getCarCount()}');
-  // Note: The const car (car4) does not increment the counter since const objects are compile-time constants.
-  
-  // Extension: Attempting to modify a final variable (this would cause a compile-time error)
-  // Uncomment the line below to see the error:
-  // car1.model = 'New Model';  // Error: The final variable 'model' can only be set once.
+  while (true) {
+    showMenu();
+    stdout.write('Enter your choice (1-4): ');
+    
+    String? choiceInput = stdin.readLineSync();
+    if (choiceInput == null || choiceInput.trim().isEmpty) {
+      print('Invalid input. Please try again.');
+      continue;
+    }
+    
+    int? choice = int.tryParse(choiceInput.trim());
+    if (choice == null || choice < 1 || choice > 4) {
+      print('Invalid choice. Please enter a number between 1 and 4.');
+      continue;
+    }
+    
+    if (choice == 4) {
+      print('Exiting the program.');
+      break;
+    }
+    
+    switch (choice) {
+      case 1:
+
+        stdout.write('Enter the car model: ');
+        String? modelInput = stdin.readLineSync();
+        if (modelInput == null || modelInput.trim().isEmpty) {
+          print('Invalid model. Please try again.');
+          continue;
+        }
+        String model = modelInput.trim();
+        
+        stdout.write('Enter the production year: ');
+        String? yearInput = stdin.readLineSync();
+        if (yearInput == null || yearInput.trim().isEmpty) {
+          print('Invalid year. Please try again.');
+          continue;
+        }
+        
+        int? year = int.tryParse(yearInput.trim());
+        if (year == null || year < 1886 || year > DateTime.now().year) {  // Basic validation: cars invented ~1886
+          print('Invalid year. Please enter a valid year.');
+          continue;
+        }
+        
+
+        Car newCar = Car(model, year);
+        cars.add(newCar);
+        print('Car added successfully!');
+        break;
+      
+      case 2:
+
+        if (cars.isEmpty) {
+          print('No cars added yet.');
+        } else {
+          for (int i = 0; i < cars.length; i++) {
+            print('\nCar ${i + 1}:');
+            cars[i].displayInfo();
+          }
+        }
+        break;
+      
+      case 3:
+        print('Total cars created: ${Car.getCarCount()}');
+        break;
+    }
+  }
+
 }

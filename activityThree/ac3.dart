@@ -68,7 +68,7 @@ class Fish extends Animal with Swimmer {
   }
 }
 
-// Extension: Add a class that uses Hunter mixin, e.g., a Tiger
+
 class Tiger extends Animal with Walker, Hunter {
   Tiger(String name) : super(name);
   
@@ -85,16 +85,16 @@ void main() {
   Set<String> uniqueNames = {};
   Map<String, String> animalHabitats = {};
   
-  // Pre-add some animals
+  
   animals.add(Dog('Buddy'));
   animals.add(Bird('Tweety'));
   animals.add(Fish('Nemo'));
-  animals.add(Tiger('Sheru'));  // Extension: Added Tiger with Hunter mixin
+  animals.add(Tiger('Sheru')); 
   
-  // Add to Set and Map
+  
   for (var animal in animals) {
     uniqueNames.add(animal.name);
-    // Assign habitats (example)
+   
     if (animal is Dog) {
       animalHabitats[animal.name] = 'Land';
     } else if (animal is Bird) {
@@ -106,20 +106,19 @@ void main() {
     }
   }
   
-  // Display all animals
+
   print('All Animals:');
   for (var animal in animals) {
     animal.displayAbilities();
     print('');
   }
-  
-  // Display unique names
+
+
   print('Unique Animal Names: $uniqueNames');
-  
-  // Display habitats
+
   print('Animal Habitats: $animalHabitats');
   
-  // Extension: User input to add new animals
+  
   while (true) {
     print('\nAnimal Tracker Menu:');
     print('1. Add a Dog');
@@ -184,7 +183,7 @@ void main() {
         break;
       
       case 5:
-        // Display all animals
+        
         if (animals.isEmpty) {
           print('No animals added yet.');
         } else {
@@ -196,14 +195,14 @@ void main() {
         break;
       
       case 6:
-        // Extension: Display animals grouped by ability
+
         displayGroupedByAbility(animals);
         break;
     }
   }
 }
 
-// Extension: Method to display animals grouped by ability
+
 void displayGroupedByAbility(List<Animal> animals) {
   List<String> walkers = [];
   List<String> flyers = [];
